@@ -35,7 +35,7 @@ async def handle_query_request(ctx: Context, sender: str, msg: QueryFormRequest)
     else:
         ctx.logger.info(f"Form with title '{msg.title}' not found. ")
     
-    await ctx.send(sender, QueryFormResponse(form=form))
+    await ctx.send(sender, QueryFormResponse(forms=form))
     
     total_queries = int(ctx.storage.get("total_queries") or 0)
     ctx.storage.set("total_queries", total_queries + 1)
