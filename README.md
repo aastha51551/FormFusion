@@ -85,7 +85,7 @@ Once the agents are running, the User Agent will automatically query the Organis
     ```
 
 ## Issues
-If you encounter any issues or bugs, please report them in the [Issues](https://github.com/yourusername/form-platform/issues) section of the GitHub repository.
+If you encounter any issues or bugs, please report them in the [Issues](https://github.com/aastha51551/FormFusion/issues) section of the GitHub repository.
 
 ## Contributing
 Contributions are welcome! Please follow these steps to contribute:
