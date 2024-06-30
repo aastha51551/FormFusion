@@ -15,6 +15,12 @@ fund_agent_if_low(organisation.wallet.address())
 organisation.include(query_proto)
 organisation.include(submit_proto)
 FORMS = {
+ 1: FormStatus(
+        body="This is an internship application form",
+        title="Internship Session",
+        description="Form to apply for internship",
+        fields=["Name", "Email", "Phone", "Resume"]
+    ).dict()
     
 }
 
