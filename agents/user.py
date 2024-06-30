@@ -18,7 +18,8 @@ user = Agent(
 fund_agent_if_low(user.wallet.address())
  
 Form_query = QueryFormRequest(
-    title="Internship Session"
+    body="UGAC",
+    title="Internship Session",
 )
 
 @user.on_interval(period=5.0, messages=QueryFormRequest)
