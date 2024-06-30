@@ -6,7 +6,6 @@
 - [Usage](#usage)
 - [Issues](#issues)
 - [Contributing](#contributing)
-- [License](#license)
 
 
 ## Setup
@@ -19,11 +18,10 @@ To set up and run the platform, follow these steps:
 ### Installation
 1. Clone the repository:
     ```sh
-    git clone https://github.com/yourusername/form-platform.git
-    cd form-platform
+    git clone https://github.com/aastha51551/FormFusion.git
     ```
 
-2. Install the required dependencies:
+2. Enter the folder and in the termiinal run this to install the required dependencies:
     ```sh
     pip install -r requirements.txt
     ```
@@ -98,6 +96,3 @@ Contributions are welcome! Please follow these steps to contribute:
 4. Submit a pull request.
 
 Please ensure your code adheres to the existing coding standards and includes appropriate tests.
-
-## License
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
