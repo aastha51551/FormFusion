@@ -16,12 +16,13 @@ To set up and run the platform, follow these steps:
 - `uagents` library
 
 ### Installation
-1. Clone the repository:
+1. Fork the repository (click on the fork button and then create new fork)
+2. Clone the repository:
     ```sh
-    git clone https://github.com/aastha51551/FormFusion.git
+    git clone https://github.com/<yourusername>/FormFusion.git
     ```
 
-2. Enter the folder and in the termiinal run this to install the required dependencies:
+3. Enter the folder and in the termiinal run this to install the required dependencies:
     ```sh
     pip install -r requirements.txt
     ```
