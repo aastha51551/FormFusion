@@ -1,67 +1,46 @@
 from uagents import Agent, Context
 from uagents.setup import fund_agent_if_low
-from protocols.submission import submit_proto, SubmitFormRequest, SubmitFormResponse
-from protocols.query import query_proto, QueryFormRequest, QueryFormResponse, FormStatus
+from protocols.query import query_proto, QueryFormRequest, QueryFormResponse, FormStatus, GetTotalQueries, TotalQueries
 
-# Create an agent named "organisation" on port 8001 with a specific seed phrase
-organisation = Agent(
-    name="organisation",
-    port=8001,
-    seed="org secret phrase",
-    endpoint=["http://127.0.0.1:8001/submit"],
+user = Agent(
+    name="user",
+    port=8000,
+    seed="user secret phrase",
+    endpoint=["http://127.0.0.1:8000/submit"],
 )
 
-# Fund the agent's wallet if the balance is low
-fund_agent_if_low(organisation.wallet.address())
+fund_agent_if_low(user.wallet.address())
 
-# Include the query and submission protocols
-organisation.include(query_proto)
-organisation.include(submit_proto)
+user.include(query_proto)
 
-# Define forms with their respective statuses
-FORMS = {
-    1: FormStatus(
-        body="This is an internship application form",
-        title="Internship Session",
-        description="Form to apply for internship",
-        fields=["Name", "Email", "Phone", "Resume"]
-    ).dict()
-}
+# Query for a non-existent form title
+Form_query = QueryFormRequest(
+    body="UGAC",
+    title="Non-existent Form Title",
+)
 
-# Store the forms in the organisation's storage
-for number, status_dict in FORMS.items():
-    organisation._storage.set(number, status_dict)
-
-# Handle form submission requests
-@organisation.on_message(SubmitFormRequest)
-async def handle_submit_request(ctx: Context, sender: str, msg: SubmitFormRequest):
-    form_status = organisation._storage.get(msg.title)
-    if form_status:
-        # Validate form fields (example: check if all fields are non-empty)
-        if all(msg.fields):
-            # Store submission data
-            submission_data = {
-                'title': msg.title,
-                'fields': msg.fields
-            }
-            # Example: Store submission data in the agent's storage
-            # Replace with your actual storage mechanism
-            submission_id = await store_submission_data(ctx, submission_data)
-            
-            # Send success response
-            await ctx.send(sender, SubmitFormResponse(success=True))
-        else:
-            # Incomplete fields, send failure response
-            await ctx.send(sender, SubmitFormResponse(success=False))
+# Handle the query response
+@user.on_message(QueryFormResponse)
+async def handle_query_response(ctx: Context, sender: str, msg: QueryFormResponse):
+    if msg.forms:
+        # Log and handle the form details if found
+        print(f"Received form details: {msg.forms}")
+        await submit_form(ctx, msg.forms)
     else:
-        # Form not found, send failure response
-        await ctx.send(sender, SubmitFormResponse(success=False))
+        # Log and handle the case where form is not found
+        print(f"Form with title '{Form_query.title}' not found.")
+        # Handle the response appropriately, e.g., update logs or notify user
 
-async def store_submission_data(ctx: Context, submission_data: dict) -> str:
-    # Example: Store submission data in agent's storage or database
-    submission_id = f"submission_{ctx.message_id}"
-    organisation._storage.set(submission_id, submission_data)
-    return submission_id
+async def submit_form(ctx: Context, form_details: FormStatus):
+    # Implementation of form submission logic
+    pass
+
+# Perform the query at regular intervals
+@user.on_interval(period=5.0, messages=QueryFormRequest)
+async def interval(ctx: Context):
+    completed = ctx.storage.get("completed")
+    if not completed:
+        await ctx.send("organisation_address_here", Form_query)
 
 if __name__ == "__main__":
-    organisation.run()
+    user.run()
