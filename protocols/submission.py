@@ -1,5 +1,5 @@
 from uagents import Context, Model, Protocol
-from .query import FormStatus
+from protocols.query import FormStatus
 from typing import List
 
 class SubmitFormRequest(Model):
@@ -23,10 +23,11 @@ async def handle_submit_request(ctx: Context, sender: str, msg: SubmitFormReques
         await ctx.send(sender, SubmitFormResponse(success=False))
         return
     
-    
+    # Storing the submission data in the context's storage for future reference
     submission_data = {
         'title': msg.title,
         'fields': msg.fields
     }
-    
+    ctx.storage.set(f"submission_{msg.title}", submission_data)
+
     await ctx.send(sender, SubmitFormResponse(success=True))
